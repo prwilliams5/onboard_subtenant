@@ -32,6 +32,7 @@ def createTenant():
     data = response.json()
     tenant_id = data['account']['id']
 
+    print(response.text)
     print(tenant_id)
     return tenant_id
 
