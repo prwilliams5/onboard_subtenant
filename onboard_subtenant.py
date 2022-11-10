@@ -16,7 +16,7 @@ subten_domain = morpheus['customOptions']['subtenDomain']
 subten_currency = morpheus['customOptions']['subtenCurrency']
 
 # subtenant admin user variable.
-subtenant_admin = morpheus['customOptions']['subtenAdminUsername']
+# subtenant_admin = morpheus['customOptions']['subtenAdminUsername']
 
 
 def createTenant():
