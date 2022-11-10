@@ -1,4 +1,4 @@
-A script for onboarding new subtenants within Morpheus.
+## A script for onboarding new subtenants within Morpheus.
 
 1. Create subtenant
    - name
