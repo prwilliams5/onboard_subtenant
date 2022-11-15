@@ -61,6 +61,7 @@ def create_admin_user(tenant_id):
     response = requests.post(url=url, json=payload, headers=headers, verify=False)
     print(response.text)
     
+create_admin_user(new_tenant_id)
 
 # subten_group = morpheus['customOptions']['subgroupname']
 # def create_group(tenant_id):
