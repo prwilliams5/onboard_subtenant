@@ -1,12 +1,12 @@
 import requests
 
-# api key, host, and headers variables. api key pulled should be from the morpheus user running the task/worflow.
+# api key, host, and headers variables. api key should autmatically be pulled from the morpheus user running the task/worflow.
 api_key = morpheus['morpheus']['apiAccessToken']
 host = morpheus['morpheus']['applianceHost']
 headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": f"Bearer {api_key}",
+    "content-type": "application/json",
+    "accept": "application/json",
+    "authorization": f"Bearer {api_key}",
     }
 
 # subtenant variables
@@ -33,8 +33,9 @@ def create_tenant():
     print(tenant_id)
     return tenant_id
 
-# instantiate tenant id variable
+# instantiate new tenant id
 new_tenant_id = create_tenant()
+
 
 # subtenant admin user variables
 subten_admin_fname = morpheus['customOptions']['subtenAdminFirstName']
@@ -43,7 +44,7 @@ subten_admin_uname = morpheus['customOptions']['subtenAdminUsername']
 subten_admin_email = morpheus['customOptions']['subtenAdminEmail']
 subten_admin_pw = morpheus['customOptions']['subtenAdminPw']
 
-# creates new admin user with role of JAmultitenant (from morpheus roles)
+# creates new admin user with role of JAmultitenant (from morpheus administration > roles)
 def create_admin_user(tenant_id):
     tenant_id = new_tenant_id
     url = f"https://{host}/api/accounts/{tenant_id}/users"
@@ -60,11 +61,31 @@ def create_admin_user(tenant_id):
     
     response = requests.post(url=url, json=payload, headers=headers, verify=False)
     print(response.text)
+
+
+# instantiate new admin user for subtenant
+new_admin_user = create_admin_user(new_tenant_id)
+
+
+# get access token of subtenant
+def get_access_token(tenant_id):
+    header = {"content-type": "application/x-www-form-urlencoded; charset=utf-8"}
+    url = f"http://{host}/oauth/token?client_id=morph-api&scope=write"
+    payload = f"password={subten_admin_pw}&username={subten_admin_uname}"
+
+    response = requests.post(url=url, json=payload, headers=header, verify=False)
+    print(response.text)
     
-create_admin_user(new_tenant_id)
+# variable for new subtenant group name
+subten_group = morpheus['customOptions']['subtenGroupName']
 
-# subten_group = morpheus['customOptions']['subgroupname']
-# def create_group(tenant_id):
-#     tenant_id = new_tenant_id
-
-
+# creates a default group within subtenant with same name as tenant
+def create_group(tenant_id):
+    tenant_id = new_tenant_id
+    url = f"https://{host}/api/accounts/{tenant_id}/groups"
+    payload = {
+        "group": {"name": subten_group}
+    }
+    
+    response = requests.post(url=url, json=payload, headers=headers, verify=False)
+    print(response.text)
