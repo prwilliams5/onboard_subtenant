@@ -100,4 +100,4 @@ def create_group():
     response = requests.post(url=url, json=payload, headers=header, verify=False)
     print(response.text)
 
-create_group(admin_token)
+create_group()
