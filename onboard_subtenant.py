@@ -1,6 +1,6 @@
 import requests
 
-# api key, host, and headers variables. api key should autmatically be pulled from the morpheus user running the task/worflow.
+# api key, host, and headers variables. api key should automatically be pulled from the morpheus user running the task/worflow.
 api_key = morpheus['morpheus']['apiAccessToken']
 host = morpheus['morpheus']['applianceHost']
 headers = {
@@ -33,6 +33,7 @@ def create_tenant():
     print(tenant_id)
     return tenant_id
 
+
 # instantiate new tenant id
 new_tenant_id = create_tenant()
 
@@ -46,7 +47,6 @@ subten_admin_pw = morpheus['customOptions']['subtenAdminPw']
 
 # creates new admin user with role of JAmultitenant (from morpheus administration > roles)
 def create_admin_user(tenant_id):
-    tenant_id = new_tenant_id
     url = f"https://{host}/api/accounts/{tenant_id}/users"
     payload = {
         "user": {"receiveNotifications": True,
@@ -67,25 +67,37 @@ def create_admin_user(tenant_id):
 new_admin_user = create_admin_user(new_tenant_id)
 
 
-# get access token of subtenant
-def get_access_token(tenant_id):
-    header = {"content-type": "application/x-www-form-urlencoded; charset=utf-8"}
-    url = f"http://{host}/oauth/token?client_id=morph-api&scope=write"
-    payload = f"password={subten_admin_pw}&username={subten_admin_uname}"
-
-    response = requests.post(url=url, json=payload, headers=header, verify=False)
-    print(response.text)
+# gets admin user's access token
+def get_admin_token():
+    url = f"https://{host}/oauth/token?client_id=morph-api&grant_type=password&scope=write"
+    payload = f"username={new_tenant_id}\\{subten_admin_uname}&password={subten_admin_pw}"
+    header = {
+        "accept": "application/json",
+        "content-type": "application/x-www-form-urlencoded; charset=utf-8"
+    }
     
-# variable for new subtenant group name
-subten_group = morpheus['customOptions']['subtenGroupName']
+    response = requests.post(url=url, data=payload, headers=header, verify=False)
+    data = response.json()
+    access_token = data['access_token']
+    print(response.text)
+    return access_token
 
-# creates a default group within subtenant with same name as tenant
+
+# instantiate access token for admin user
+admin_token = get_admin_token()
+    
+
+# creates a default group within subtenant
 def create_group(tenant_id):
     tenant_id = new_tenant_id
     url = f"https://{host}/api/accounts/{tenant_id}/groups"
-    payload = {
-        "group": {"name": subten_group}
+    header = {
+        "content-type": "application/json",
+        "accept": "application/json",
+        "authorization": f"Bearer: {admin_token}"
     }
+    payload = {"group": {"name": 'Default Group'}}
     
-    response = requests.post(url=url, json=payload, headers=headers, verify=False)
+    response = requests.post(url=url, json=payload, headers=header, verify=False)
     print(response.text)
+

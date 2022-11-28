@@ -1,9 +1,15 @@
-## A script for onboarding new subtenants within Morpheus.
+## Script for onboarding new subtenants within Morpheus
 
 1. Create subtenant
    - name
    - domain name
-   -
+   - currency
 2. Create subtenant admin user
-3. Create and get admin user api key and store in cypher
-4. Create subtenant group(s)
+   - first name
+   - last name
+   - username
+   - email
+   - password
+3. Get admin access token
+4. Create default subtenant group
+   - match subtenant name with group name
