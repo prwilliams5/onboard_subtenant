@@ -93,7 +93,7 @@ def create_group():
     header = {
         "content-type": "application/json",
         "accept": "application/json",
-        "authorization": f"Bearer: {admin_token}"
+        "authorization": f"Bearer: {api_key}"
     }
     payload = {"group": {"name": "Default Group"}}
     
