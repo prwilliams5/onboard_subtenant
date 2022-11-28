@@ -80,7 +80,7 @@ def get_admin_token():
     data = response.json()
     access_token = data['access_token']
     print(response.text)
-    return access_token
+    return admin_token
 
 
 # instantiate access token for admin user
