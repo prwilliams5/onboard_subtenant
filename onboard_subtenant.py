@@ -93,9 +93,9 @@ def create_group():
     header = {
         "content-type": "application/json",
         "accept": "application/json",
-        "authorization": f"Bearer: {api_key}"
+        "authorization": f"Bearer: {admin_token}"
     }
-    payload = {"group": {"name": "Default Group"}}
+    payload = {"group": {"name" "Default Group"}}
     
     response = requests.post(url=url, json=payload, headers=header, verify=False)
     print(response.text)
