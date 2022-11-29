@@ -1,5 +1,4 @@
 import requests
-from urllib.parse import urlencode
 
 
 # api key, host, and headers variables. api key should automatically be pulled from the morpheus user running the task/worflow.
@@ -26,7 +25,6 @@ def create_tenant():
         "currency": subten_currency
         }
     }
-
     response = requests.post(url=url, json=payload, headers=headers, verify=False)
     data = response.json()
     tenant_id = data['account']['id']
@@ -35,10 +33,8 @@ def create_tenant():
     print(tenant_id)
     return tenant_id
 
-
 # instantiate new tenant id
 new_tenant_id = create_tenant()
-
 
 # subtenant admin user variables
 subten_admin_fname = morpheus['customOptions']['subtenAdminFirstName']
@@ -60,14 +56,11 @@ def create_admin_user(tenant_id):
         "password": subten_admin_pw
         }
     }
-    
     response = requests.post(url=url, json=payload, headers=headers, verify=False)
     print(response.text)
 
-
 # instantiate new admin user for subtenant
 new_admin_user = create_admin_user(new_tenant_id)
-
 
 # gets admin user's access token
 def get_admin_token():
@@ -77,7 +70,6 @@ def get_admin_token():
         "accept": "application/json",
         "content-type": "application/x-www-form-urlencoded; charset=utf-8"
     }
-    
     response = requests.post(url=url, data=payload, headers=header, verify=False)
     data = response.json()
     access_token = data['access_token']
@@ -98,7 +90,6 @@ def create_group():
         "authorization": f"Bearer {admin_token}"
     }
     payload = {"group": {"name" "Default Group"}}
-    
     response = requests.post(url=url, json=payload, headers=header, verify=False)
     print(response.text)
 
