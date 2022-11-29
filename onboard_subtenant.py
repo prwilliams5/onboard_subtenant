@@ -1,4 +1,6 @@
 import requests
+from urllib.parse import urlencode
+
 
 # api key, host, and headers variables. api key should automatically be pulled from the morpheus user running the task/worflow.
 api_key = morpheus['morpheus']['apiAccessToken']
