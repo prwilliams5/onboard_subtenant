@@ -70,14 +70,14 @@ def get_admin_token():
     return admin_token
 
 # creates a default group within subtenant
-def create_group():
-    url = f"https://{host}/api/accounts/{new_tenant_id}/groups"
-    header = {
-        "content-type": "application/json",
-        "accept": "application/json",
-        "authorization": f"Bearer {api_key}"
-    }
+def create_group(admin_token):
+    url = f"https://{host}//groups"
     payload = {"group": {"name": "Default Group"}}
+    header = {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "authorization": f"Bearer {admin_token}"
+    }
     response = requests.post(url=url, json=payload, headers=header, verify=False)
     print(response.text)
     
@@ -85,4 +85,4 @@ def create_group():
 new_tenant_id = create_subtenant()
 new_admin_user = create_admin_user(new_tenant_id)
 admin_token = get_admin_token()
-create_group()
+create_group(admin_token)
