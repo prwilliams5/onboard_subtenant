@@ -76,7 +76,7 @@ def create_group(admin_token):
     header = {
         "accept": "application/json",
         "content-type": "application/json",
-        "authorization": f"Bearer {admin_token}"
+        "authorization": f"Bearer {api_key}"
     }
     response = requests.post(url=url, json=payload, headers=header, verify=False)
     print(response.text)
