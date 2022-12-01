@@ -1,5 +1,4 @@
 import requests
-import json
 
 # api key, host, and headers variables. api key should automatically be pulled from the morpheus user running the task/worflow.
 api_key = morpheus['morpheus']['apiAccessToken']
@@ -71,7 +70,7 @@ def get_admin_token():
     return admin_token
 
 # creates a default group within subtenant
-def create_group(admin_token):
+def create_group():
     url = f"https://{host}/api/accounts/{new_tenant_id}/groups"
     header = {
         "content-type": "application/json",
@@ -79,13 +78,11 @@ def create_group(admin_token):
         "authorization": f"Bearer {api_key}"
     }
     payload = {"group": {"name": "Default Group"}}
-    # body = json.dumps(payload)
     response = requests.post(url=url, json=payload, headers=header, verify=False)
     print(response.text)
     
 
-
 new_tenant_id = create_subtenant()
 new_admin_user = create_admin_user(new_tenant_id)
 admin_token = get_admin_token()
-create_group(admin_token)
+create_group()
