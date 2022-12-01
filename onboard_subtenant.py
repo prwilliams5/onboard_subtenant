@@ -78,10 +78,12 @@ def create_group(admin_token):
         "accept": "application/json",
         "authorization": f"Bearer {admin_token}"
     }
-    payload = {"group": {"name" "Default Group"}}
-    data = json.dumps(payload)
-    response = requests.post(url=url, json=payload, data=data, headers=header, verify=False)
+    payload = {"group": {"name": "Default Group"}}
+    body = json.dumps(payload)
+    response = requests.post(url=url, json=payload, data=body, headers=header, verify=False)
+    data = response.json()
     print(response.text)
+    
 
 
 new_tenant_id = create_subtenant()
