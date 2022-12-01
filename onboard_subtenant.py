@@ -71,7 +71,7 @@ def get_admin_token():
 
 # creates a default group within subtenant
 def create_group(admin_token):
-    url = f"https://{host}//groups"
+    url = f"https://{host}/api/accounts/{new_tenant_id}/groups"
     payload = {"group": {"name": "Default Group"}}
     header = {
         "accept": "application/json",
