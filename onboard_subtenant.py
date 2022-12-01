@@ -57,7 +57,7 @@ def create_admin_user(tenant_id):
     print(response.text)
 
 # creates and gets admin user's access token
-def get_admin_token(new_tenant_id):
+def get_admin_token():
     url = f"https://{host}/oauth/token?client_id=morph-api&grant_type=password&scope=write"
     payload = f"username={new_tenant_id}\\{subten_admin_uname}&password={subten_admin_pw}"
     header = {
