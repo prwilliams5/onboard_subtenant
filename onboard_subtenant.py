@@ -16,7 +16,7 @@ subten_domain = morpheus['customOptions']['subtenDomain']
 subten_currency = morpheus['customOptions']['subtenCurrency']
 
 # creates subtenant and returns tenant id which is used for creating admin user and groups within subtenant.
-def create_tenant():
+def create_subtenant():
     url = f"https://{host}/api/accounts"
     payload = {"account": {
         "role": {"id": 2},
@@ -32,9 +32,6 @@ def create_tenant():
     print(response.text)
     print(tenant_id)
     return tenant_id
-
-# instantiate new tenant id
-new_tenant_id = create_tenant()
 
 # subtenant admin user variables
 subten_admin_fname = morpheus['customOptions']['subtenAdminFirstName']
@@ -59,10 +56,7 @@ def create_admin_user(tenant_id):
     response = requests.post(url=url, json=payload, headers=headers, verify=False)
     print(response.text)
 
-# instantiate new admin user for subtenant
-new_admin_user = create_admin_user(new_tenant_id)
-
-# gets admin user's access token
+# creates and gets admin user's access token
 def get_admin_token():
     url = f"https://{host}/oauth/token?client_id=morph-api&grant_type=password&scope=write"
     payload = f"username={new_tenant_id}\\{subten_admin_uname}&password={subten_admin_pw}"
@@ -74,12 +68,7 @@ def get_admin_token():
     data = response.json()
     access_token = data['access_token']
     print(response.text)
-    return access_token
-
-
-# instantiate access token for admin user
-admin_token = get_admin_token()
-    
+    return admin_token
 
 # creates a default group within subtenant
 def create_group():
@@ -93,4 +82,8 @@ def create_group():
     response = requests.post(url=url, json=payload, headers=header, verify=False)
     print(response.text)
 
-create_group()
+
+new_tenant_id = create_subtenant()
+new_admin_user = create_admin_user(new_tenant_id)
+admin_token = get_admin_token(new_tenant_id)
+create_group(admin_token)
