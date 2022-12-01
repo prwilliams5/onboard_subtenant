@@ -66,7 +66,7 @@ def get_admin_token():
     }
     response = requests.post(url=url, data=payload, headers=header, verify=False)
     data = response.json()
-    access_token = data['access_token']
+    admin_token = data['access_token']
     print(response.text)
     return admin_token
 
