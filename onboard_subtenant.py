@@ -76,12 +76,11 @@ def create_group(admin_token):
     header = {
         "content-type": "application/json",
         "accept": "application/json",
-        "authorization": f"Bearer {admin_token}"
+        "authorization": f"Bearer {api_key}"
     }
     payload = {"group": {"name": "Default Group"}}
-    body = json.dumps(payload)
-    response = requests.post(url=url, json=payload, data=body, headers=header, verify=False)
-    data = response.json()
+    # body = json.dumps(payload)
+    response = requests.post(url=url, json=payload, headers=header, verify=False)
     print(response.text)
     
 
